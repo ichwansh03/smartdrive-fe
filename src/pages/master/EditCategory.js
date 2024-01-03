@@ -33,7 +33,7 @@ export default function EditCategory() {
     }
 
     const onSubmit =()=>{
-        apiCategory.createRow(formValues).then(result => {
+        apiCategory.updateRow(formValues).then(result => {
             console.log('data successfully added');
         }).catch(error => console.log(error));
 
@@ -51,12 +51,14 @@ export default function EditCategory() {
             <ClayPanel.Body>
               <ClayForm.Group className="form-group-sm">
               <ClayInput
-                  type="text" readOnly={true}>                    
+                  type="text" readOnly={true} defaultValue={formValues.cateId}>                    
                 </ClayInput>
                 <label htmlFor="basicInput">Name</label>
                 <ClayInput
                   placeholder="Category Name"
-                  type="text" onChange={handleChange("cateName")}>                    
+                  type="text" 
+                  value={formValues.cateName}
+                  onChange={handleChange("cateName")}>                    
                 </ClayInput>
               </ClayForm.Group>
               {/* <ClayForm.Group className="form-group-sm">

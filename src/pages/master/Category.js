@@ -81,7 +81,11 @@ export default function Category() {
   }
 
   const onDelete =(id)=>{
-    alert(id);
+    apiCategory.deleteRow(id).then(result => {
+      console.log('data successfully has been removed')
+    }).catch(error => console.log(error));
+
+    setRefresh(true);
   }
 
   return (

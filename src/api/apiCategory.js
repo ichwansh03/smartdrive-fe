@@ -32,7 +32,7 @@ const findRow = async(id)=>{
 
 const updateRow = async(data)=>{
     try {
-        const result = await axios.put(`${config.smartdrive}/category/${data.cate_id}`,
+        const result = await axios.put(`${config.smartdrive}/master/category/${data.cate_id}`,
         data);
         return  result;
     } catch (error) {
@@ -43,7 +43,7 @@ const updateRow = async(data)=>{
 
 const deleteRow = async(id)=>{
     try {
-        const result = await axios.delete(`${config.smartdrive}/category/${id}`);
+        const result = await axios.delete(`${config.smartdrive}/master/category/${id}`);
         return  result;
     } catch (error) {
         return error;
