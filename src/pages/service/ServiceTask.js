@@ -16,15 +16,21 @@ export default function ServiceTask() {
         <h1>Service Task</h1>
         <table>
             <thead>
-                <th>Sero ID</th>
-                <th>Sero Status</th>
+                <th>Task ID</th>
+                <th>Task Name</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Status</th>
             </thead>
             <tbody>
                 {
                     (task || []).map(item => (
                         <tr>
-                            <td>{item.seroId}</td>
-                            <td>{item.seroStatus}</td>
+                            <td>{item.seotId}</td>
+                            <td>{item.seotName}</td>
+                            <td>{item.seotActualStartdate}</td>
+                            <td>{item.seotActualEnddate}</td>
+                            <td>{item.seotStatus}</td>
                         </tr>
                     ))    
                 }
