@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import ClayButton from '@clayui/button';
+import ClayModal, {useModal} from '@clayui/modal';
 import apiService from '../../api/service_order/apiService'
 
 export default function ServiceTask() {
@@ -31,6 +33,7 @@ export default function ServiceTask() {
                             <td>{item.seotActualStartdate}</td>
                             <td>{item.seotActualEnddate}</td>
                             <td>{item.seotStatus}</td>
+                            <ClayButton displayType="primary">...</ClayButton>
                         </tr>
                     ))    
                 }

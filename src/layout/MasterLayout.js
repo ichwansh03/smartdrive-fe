@@ -15,10 +15,10 @@ export default function MainLayout() {
     return (
         <ClayLayout.ContainerFluid view>
         <ClayLayout.Row justify="start">
-          <ClayLayout.Col size={4} style={colStyles}>
+          <ClayLayout.Col size={3}>
             <Sidebar/>
           </ClayLayout.Col>
-          <ClayLayout.Col size={8} style={colStyles}>
+          <ClayLayout.Col size={9}>
             <Outlet />
           </ClayLayout.Col>
         </ClayLayout.Row>

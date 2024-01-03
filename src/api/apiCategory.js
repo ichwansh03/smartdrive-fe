@@ -13,7 +13,7 @@ const list = async()=>{
 
 const createRow = async(payload)=>{
     try {
-        const result = await axios.post(`${config.smartdrive}/category/`,payload);
+        const result = await axios.post(`${config.smartdrive}/master/category`,payload);
         return result;    
     } catch (error) {
         return error;
@@ -22,7 +22,7 @@ const createRow = async(payload)=>{
 
 const findRow = async(id)=>{
     try {
-        const result = await axios.get(`${config.smartdrive}/category/${id}`);
+        const result = await axios.get(`${config.smartdrive}/master/category/${id}`);
         return  result.data;
     } catch (error) {
         return error;

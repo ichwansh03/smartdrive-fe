@@ -8,6 +8,8 @@ import Profile from '../pages/user/Profile'
 import ServiceLayout from '../layout/ServiceLayout'
 import ServiceTask from '../pages/service/ServiceTask'
 import MainLayout from '../layout/MasterLayout'
+import AddCategory from '../pages/master/AddCategory'
+import EditCategory from '../pages/master/EditCategory'
 
 export default function Routes() {
   return useRoutes([
@@ -16,7 +18,8 @@ export default function Routes() {
         element : <MainLayout/>,
         children : [
             {path : 'category', element : <Category/>},
-            {path : 'city', element : <City/>},
+            {path : 'category/add', element : <AddCategory/>},
+            {path : 'category/edit', element : <EditCategory/>},
             {path : 'task', element : <ServiceTask/>}
         ]
     },
