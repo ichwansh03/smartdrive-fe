@@ -1,9 +1,9 @@
 import axios from "axios";
 import config from "../../config/config";
 
-const taskList = async()=>{
+const taskList = async(id)=>{
     try {
-        const result = await axios.get(`${config.smartdrive}/service/search?seroId=FS0001-20231219`);
+        const result = await axios.get(`${config.smartdrive}/service/search?seroId=${id}`);
         return result.data.soTasksDtoList;
     } catch (error) {
         return await error.message;

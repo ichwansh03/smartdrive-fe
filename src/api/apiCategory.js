@@ -30,10 +30,9 @@ const findRow = async(id)=>{
     }
 }
 
-const updateRow = async(data)=>{
+const updateRow = async(data, id)=>{
     try {
-        const result = await axios.put(`${config.smartdrive}/master/category/${data.cate_id}`,
-        data);
+        const result = await axios.put(`${config.smartdrive}/master/category/${id}`, data);
         return  result;
     } catch (error) {
         return error;

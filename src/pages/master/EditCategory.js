@@ -12,7 +12,6 @@ export default function EditCategory() {
     let {state} = useLocation();
 
     const [formValues, setFormValues] = useState({
-        cateId: '',
         cateName: ''
     });
 
@@ -22,7 +21,6 @@ export default function EditCategory() {
       apiCategory.findRow(state.id)
         .then(data => {
             setFormValues({
-              cateId : data.cateId,
               cateName : data.cateName
             });
         });
@@ -33,7 +31,7 @@ export default function EditCategory() {
     }
 
     const onSubmit =()=>{
-        apiCategory.updateRow(formValues).then(result => {
+        apiCategory.updateRow(formValues,state.id).then(result => {
             console.log('data successfully added');
         }).catch(error => console.log(error));
 
@@ -51,7 +49,7 @@ export default function EditCategory() {
             <ClayPanel.Body>
               <ClayForm.Group className="form-group-sm">
               <ClayInput
-                  type="text" readOnly={true} defaultValue={formValues.cateId}>                    
+                  type="text" readOnly={true} value={state.id}>                    
                 </ClayInput>
                 <label htmlFor="basicInput">Name</label>
                 <ClayInput
