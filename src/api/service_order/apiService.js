@@ -10,6 +10,16 @@ const taskList = async(id)=>{
     }
 }
 
+const workorderList = async(id)=>{
+    try {
+        const result = await axios.get(`${config.smartdrive}/service/workorder?seotId=${id}`);
+        return result.data;
+    } catch (error) {
+        return await error.message;
+    }
+}
+
 export default {
-    taskList
+    taskList,
+    workorderList
 }
