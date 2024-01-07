@@ -15,13 +15,16 @@ export default function ServiceTask() {
   const [order, setOrders] = useState([]);
   //list task
   const [task, setTasks] = useState([]);
+  //set checked task by id
+  const [checked, isChecked] = useState(false);
+
   //get workorder by task id
   const [workorderTaskId, setWorkorderTaskId] = useState(null);
-  //get workorder
+  //list workorder 
   const [workorder, setWorkorder] = useState([]);
-  //set checked task
-  const [checked, isChecked] = useState(false);
-  
+  //set checked workorder by id
+  const [checkWorkorder, isCheckWorkorder] = useState(false);
+
   const [refresh, setRefresh] = useState(false);
   const [value, setValue] = useState([false]);
   const { observer, onOpenChange, open } = useModal();
@@ -29,8 +32,7 @@ export default function ServiceTask() {
 
   //data order
   useEffect(() => {
-    apiService.taskList('FS0001-20231219')
-      .then(dataOrder => { 
+    apiService.taskList('FS0001-20231219').then(dataOrder => { 
         setOrders(dataOrder);
      })
      setRefresh(false);
@@ -38,8 +40,7 @@ export default function ServiceTask() {
 
   //data list task 
   useEffect(() => {
-    apiService.taskList('FS0001-20231219')
-      .then(dataTask => { 
+    apiService.taskList('FS0001-20231219').then(dataTask => { 
         setTasks(dataTask.soTasksDtoList);
       })
       setRefresh(false);
@@ -48,8 +49,8 @@ export default function ServiceTask() {
   //data list workorder
   useEffect(() => {
     if (workorderTaskId) {
-      apiService.workorderList(workorderTaskId)
-        .then(dataWorkorder => { setWorkorder(dataWorkorder); })
+      apiService.workorderList(workorderTaskId).then(dataWorkorder => { setWorkorder(dataWorkorder); 
+      })
       setRefresh(false);
     }
   }, [workorderTaskId, refresh, state]);
@@ -92,8 +93,26 @@ export default function ServiceTask() {
   //update task status
   const updateStatus = (status, id) => {
     apiService.taskUpdate({seotStatus: status}, id).then(result => {
-      alert('data successfully completed', result);
+      alert('task successfully completed', result);
     }).catch(error => console.log(error));
+  }
+
+  //handle checkbox workorder
+  const handleWorkorderStatus = (id) => {
+    isCheckWorkorder(!checkWorkorder);
+
+    if (!checkWorkorder) {
+      updateWorkorderStatus(true, id);
+    } else {
+      updateWorkorderStatus(false, id);
+    }
+  }
+
+  //update workorder status
+  const updateWorkorderStatus = (status, id) => {
+    apiService.workorderUpdate({sowoStatus: status}, id).then(result => {
+      alert('workorder successfully completed', result);
+    }).catch(error => console.error(error));
   }
 
   return (
@@ -119,10 +138,9 @@ export default function ServiceTask() {
                           <Cell>{row["sowoName"]}</Cell>
                           <Cell>
                             <ClayCheckbox
-                              aria-label="Completed"
-                              checked={value}
+                              checked={checkWorkorder}
                               label="Completed"
-                              onChange={() => setValue(val => val)}
+                              onChange={() => handleWorkorderStatus(row["sowoId"])}
                             />
                           </Cell>
                         </Row>

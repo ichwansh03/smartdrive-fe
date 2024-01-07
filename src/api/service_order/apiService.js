@@ -1,6 +1,15 @@
 import axios from "axios";
 import config from "../../config/config";
 
+const generateService = async(creq)=>{
+    try {
+        const result = await axios.post(`${config.smartdrive}/service`, creq);
+        return result;
+    } catch (error) {
+        return await error;
+    }
+}
+
 const taskList = async(id)=>{
     try {
         const result = await axios.get(`${config.smartdrive}/service/search?seroId=${id}`);
@@ -56,6 +65,7 @@ const workorderUpdate = async(status, id) => {
 }
 
 export default {
+    generateService,
     taskList,
     workorderList,
     findTask,

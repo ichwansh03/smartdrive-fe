@@ -10,6 +10,7 @@ import ServiceTask from '../pages/service/ServiceTask'
 import MainLayout from '../layout/MasterLayout'
 import AddCategory from '../pages/master/AddCategory'
 import EditCategory from '../pages/master/EditCategory'
+import ServiceOrder from '../pages/service/ServiceOrder'
 
 export default function Routes() {
   return useRoutes([
@@ -20,6 +21,7 @@ export default function Routes() {
             {path : 'category', element : <Category/>},
             {path : 'category/add', element : <AddCategory/>},
             {path : 'category/edit', element : <EditCategory/>},
+            {path : 'order', element : <ServiceOrder/>},
             {path : 'task', element : <ServiceTask/>}
         ]
     },

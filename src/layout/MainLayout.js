@@ -12,6 +12,7 @@ export default function MasterLayout() {
         <ul>
             <Link to="category">Category</Link>
             <Link to="city">City</Link>
+            <Link to="order">ServiceOrder</Link>
             <Link to="task">ServiceTask</Link>
         </ul>
 

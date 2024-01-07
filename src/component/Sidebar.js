@@ -24,14 +24,14 @@ export default function Sidebar() {
           id: "5",
           items: [
             {
+              id: "7",
+              href: "order",
+              label: "Service Order"
+            },
+            {
               id: "6",
               href: "task",
               label: "Service Task"
-            },
-            {
-              id: "7",
-              href: "#6",
-              label: "Six"
             }
           ],
           label: "My Endpoint"
@@ -46,7 +46,7 @@ export default function Sidebar() {
   return (
     <ClayVerticalNav
       active="6"
-      defaultExpandedKeys={new Set(["5"])}
+      defaultExpandedKeys={new Set(["6"])}
       items={menus}
       large={false}
       spritemap={false}
