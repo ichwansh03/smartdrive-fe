@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import apiService from '../../api/service_order/apiService';
 import { Body, Cell, Head, Row, Table, Text } from '@clayui/core';
 import PanelPage from '../../component/PanelPage';
@@ -11,28 +11,48 @@ import { ClayCheckbox } from '@clayui/form';
 
 export default function ServiceTask() {
 
-  let navigate = useNavigate();
+  //order
   const [order, setOrders] = useState([]);
+  //list task
   const [task, setTasks] = useState([]);
-  const [selectedTaskId, setSelectedTaskId] = useState(null);
+  //get workorder by task id
+  const [workorderTaskId, setWorkorderTaskId] = useState(null);
+  //get workorder
   const [workorder, setWorkorder] = useState([]);
-
+  //set checked task
+  const [checked, isChecked] = useState(false);
+  
   const [refresh, setRefresh] = useState(false);
-  const [value, setValue] = useState([]);
+  const [value, setValue] = useState([false]);
   const { observer, onOpenChange, open } = useModal();
   const { state } = useLocation();
 
+  //data order
   useEffect(() => {
-    apiService.taskList('PL0001-20231219')
-      .then(dataOrder => { setOrders(dataOrder); })
-    setRefresh(false);
+    apiService.taskList('FS0001-20231219')
+      .then(dataOrder => { 
+        setOrders(dataOrder);
+     })
+     setRefresh(false);
   }, [refresh, state]);
 
+  //data list task 
   useEffect(() => {
-    apiService.taskList('PL0001-20231219')
-      .then(dataTask => { setTasks(dataTask.soTasksDtoList); })
-    setRefresh(false);
+    apiService.taskList('FS0001-20231219')
+      .then(dataTask => { 
+        setTasks(dataTask.soTasksDtoList);
+      })
+      setRefresh(false);
   }, [refresh, state]);
+
+  //data list workorder
+  useEffect(() => {
+    if (workorderTaskId) {
+      apiService.workorderList(workorderTaskId)
+        .then(dataWorkorder => { setWorkorder(dataWorkorder); })
+      setRefresh(false);
+    }
+  }, [workorderTaskId, refresh, state]);
 
   const taskColumns = [
     { id: "seotId", name: "Task ID" },
@@ -43,27 +63,37 @@ export default function ServiceTask() {
     { id: "action", name: "Action" }
   ]
 
-  useEffect(() => {
-    if (selectedTaskId) {
-      apiService.workorderList(selectedTaskId)
-      .then(dataWorkorder => { setWorkorder(dataWorkorder); })
-      setRefresh(false); 
-    }
-  }, [selectedTaskId, refresh, state]);
-
   const workorderColumns = [
     { id: "sowoName", name: "Workorder" },
     { id: "sowoStatus", name: "Status" }
   ]
 
   const openModal = (taskId) => {
-      setSelectedTaskId(taskId);
-      onOpenChange(true);
+    setWorkorderTaskId(taskId);
+    onOpenChange(true);
   }
 
   const closeModal = () => {
-    setSelectedTaskId(null);
+    setWorkorderTaskId(null);
     onOpenChange(false);
+  }
+
+  //handle checkbox task
+  const handleTaskStatus = (id) => {
+    isChecked(!checked);
+
+    if (!checked) {
+      updateStatus('COMPLETED', id);
+    } else {
+      updateStatus('INPROGRESS', id);
+    }
+  }
+
+  //update task status
+  const updateStatus = (status, id) => {
+    apiService.taskUpdate({seotStatus: status}, id).then(result => {
+      alert('data successfully completed', result);
+    }).catch(error => console.log(error));
   }
 
   return (
@@ -76,7 +106,7 @@ export default function ServiceTask() {
               <Table>
                 <Head items={workorderColumns}>
                   {column => (
-                    <Cell key={column.id} sortable>
+                    <Cell key={column.id}>
                       {column.name}
                     </Cell>
                   )}
@@ -92,7 +122,7 @@ export default function ServiceTask() {
                               aria-label="Completed"
                               checked={value}
                               label="Completed"
-                              onChange={() => setValue(val => !val)}
+                              onChange={() => setValue(val => val)}
                             />
                           </Cell>
                         </Row>
@@ -132,17 +162,17 @@ export default function ServiceTask() {
                     </ClayInput>
                   </div>
                   {/* <div className='col-3 float-left'>
-                <label>Created On</label>
-                <ClayInput
-                  type="text" readOnly={true} value={order.services.servCreatedOn}>
-                </ClayInput>
-                </div>
-                <div className='col-2 float-left'>
-                <label>Service Type</label>
-                <ClayInput
-                  type="text" readOnly={true} value={order.services.servType}>
-                </ClayInput>
-                </div> */}
+                    <label>Created On</label>
+                    <ClayInput
+                      type="text" readOnly={true} value={order.services.servCreatedOn}>
+                    </ClayInput>
+                  </div>
+                  <div className='col-2 float-left'>
+                    <label>Service Type</label>
+                    <ClayInput
+                      type="text" readOnly={true} value={order.services.servType}>
+                    </ClayInput>
+                  </div> */}
                   <div className='col-2 float-left'>
                     <label>Status</label>
                     <ClayInput
@@ -156,17 +186,17 @@ export default function ServiceTask() {
                     </ClayInput>
                   </div>
                   {/* <div className='col-md-3'>
-                <label>Customer Name</label>
-                <ClayInput
-                  type="text" readOnly={true} value={order.services.userDto.userFullName}>
-                </ClayInput>
-                </div>
-                <div className='col-md-3'>
-                <label>Financial Advisor</label>
-                <ClayInput
-                  type="text" readOnly={true} value={order.employees.employees.empName}>
-                </ClayInput>
-                </div> */}
+                    <label>Customer Name</label>
+                    <ClayInput
+                      type="text" readOnly={true} value={order.services.userDto.userFullName}>
+                    </ClayInput>
+                  </div>
+                  <div className='col-md-3'>
+                    <label>Financial Advisor</label>
+                    <ClayInput
+                      type="text" readOnly={true} value={order.employees.employees.empName}>
+                    </ClayInput>
+                  </div> */}
                 </ClayInput.GroupItem>
               </ClayInput.Group>
             </ClayManagementToolbar.Item>
@@ -176,7 +206,7 @@ export default function ServiceTask() {
         <Table>
           <Head items={taskColumns}>
             {column => (
-              <Cell key={column.id} sortable>
+              <Cell key={column.id}>
                 {column.name}
               </Cell>
             )}
@@ -197,7 +227,13 @@ export default function ServiceTask() {
                     <Cell>{row["seotActualEnddate"]}</Cell>
                     <Cell>{row["seotStatus"]}</Cell>
                     <Cell>
-                      <ClayButton displayType="primary" onClick={() => openModal(row["seotId"])}>...</ClayButton>
+                      {
+                        row["serviceOrderWorkorders"].length === 0 ? (
+                          <ClayCheckbox checked={checked} onChange={()=>handleTaskStatus(row["seotId"])}></ClayCheckbox>
+                        ) : (
+                          <ClayButton displayType="primary" onClick={() => openModal(row["seotId"])}>...</ClayButton>
+                        )
+                      }
                     </Cell>
                   </Row>
                 )

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import ClayForm, { ClayInput } from '@clayui/form';
 import ClayPanel from '@clayui/panel';
-import ClayButton, {ClayButtonWithIcon} from '@clayui/button'
+import ClayButton from '@clayui/button'
 import apiCategory from '../../api/apiCategory';
 
 export default function EditCategory() {
