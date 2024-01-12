@@ -17,8 +17,8 @@ export default function Sidebar() {
         },
         {
           id: "4",
-          href: "city",
-          label: "City"
+          href: "user",
+          label: "User"
         },
         {
           id: "5",
@@ -26,7 +26,12 @@ export default function Sidebar() {
             {
               id: "7",
               href: "order",
-              label: "Service Order"
+              label: "Request Feasiblity"
+            },
+            {
+              id: "8",
+              href: "polis",
+              label: "Request Polis & Claim"
             },
             {
               id: "6",
@@ -34,10 +39,10 @@ export default function Sidebar() {
               label: "Service Task"
             }
           ],
-          label: "My Endpoint"
+          label: "Service Module"
         },
         {
-          id: "8",
+          id: "9",
           href: "#7",
           label: "Seven"
         }

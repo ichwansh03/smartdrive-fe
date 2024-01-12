@@ -32,7 +32,7 @@ export default function ServiceTask() {
 
   //data order
   useEffect(() => {
-    apiService.taskList('FS0001-20231219').then(dataOrder => { 
+    apiService.taskList(state.id).then(dataOrder => { 
         setOrders(dataOrder);
      })
      setRefresh(false);
@@ -40,7 +40,7 @@ export default function ServiceTask() {
 
   //data list task 
   useEffect(() => {
-    apiService.taskList('FS0001-20231219').then(dataTask => { 
+    apiService.taskList(state.id).then(dataTask => { 
         setTasks(dataTask.soTasksDtoList);
       })
       setRefresh(false);

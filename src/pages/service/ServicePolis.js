@@ -1,56 +1,50 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { Body, Button, Cell, Head, Row, Table, Text } from '@clayui/core';
 import PanelPage from '../../component/PanelPage';
-import ClayButton, { ClayButtonWithIcon } from '@clayui/button';
 import { useNavigate, useLocation } from "react-router-dom";
 import apiService from '../../api/service_order/apiService';
 import ClayIcon from '@clayui/icon';
 import { ClayInput } from '@clayui/form';
 import ClayManagementToolbar from '@clayui/management-toolbar';
+import ClayButton, { ClayButtonWithIcon } from '@clayui/button';
 import ClayPaginationBar from '@clayui/pagination-bar';
 import { ClayPaginationWithBasicItems } from '@clayui/pagination';
 
-export default function ServiceOrder() {
-
-  let navigate = useNavigate();
-  const [order, setOrder] = useState([]);
+export default function ServicePolis() {
+    
+    let navigate = useNavigate();
+  const [polis, setPolis] = useState([]);
 
   const [refresh, setRefresh] = useState(false);
   const { state } = useLocation();
 
   useEffect(() => {
-    apiService.serviceOrders().then(orders => {
-      console.log('data : ', orders);
-      setOrder(orders);
+    apiService.requestPolis().then(orders => {
+      console.log('data : ',orders);
+      setPolis(orders);
     });
     setRefresh(false);
   }, [refresh, state])
 
-  const itemColumn = [
-    { id: "customerName", name: "Customer Name" },
-    { id: "customerEmail", name: "Customer Email" },
-    { id: "createdOn", name: "Created On" },
-    { id: "seroId", name: "Feasiblity ID" },
-    { id: "servStatus", name: "Feasiblity Status" },
-    { id: "action", name: "Action" }
-  ]
-
-  const onFeasiblity = (id) => {
+  const onPolis = (id) => {
     navigate('/task', { state: { id: id } })
   }
 
-  const onRequestPolis = (id) => {
-    apiService.generateService({creqEntityId: id}).then(result => {
-      alert('data successfully generate');
-    }).catch(error => console.log(error));
-
-    navigate('/polis', { state: { refresh: true } })
-  }
+  const itemColumn = [
+    { id: "customerName", name: "Customer Name" },
+    { id: "polisNo", name: "Polis Number" },
+    { id: "vehicleNo", name: "Vehicle Number" },
+    { id: "periode", name: "Periode" },
+    { id: "totalPremi", name: "Total Premi" },
+    { id: "seroId", name: "Service Order ID" },
+    { id: "servType", name: "Service Type" },
+    { id: "action", name: "Action" }
+  ]
 
   return (
     <div>
-      <PanelPage title={"Customer Request"} />
-      <ClayManagementToolbar>
+        <PanelPage title={"Service Order Polis"} />
+        <ClayManagementToolbar>
         <ClayManagementToolbar.ItemList>
           <ClayManagementToolbar.Search>
             <ClayInput.Group>
@@ -102,25 +96,27 @@ export default function ServiceOrder() {
             )
           }
         </Head>
-        <Body defaultItems={order}>
+        <Body defaultItems={polis}>
           {
-            (order || []).map(
+            (polis || []).map(
               row => (
                 <Row key={row["seroId"]}>
                   <Cell>{row["customerName"]}</Cell>
-                  <Cell>{row["customerEmail"]}</Cell>
-                  <Cell>{row["createdOn"]}</Cell>
+                  <Cell>{row["polisNo"]}</Cell>
+                  <Cell>{row["vehicleNo"]}</Cell>
+                  <Cell>{row["periode"]}</Cell>
+                  <Cell>{row["totalPremi"]}</Cell>
                   <Cell>
-                    <div onClick={() => onFeasiblity(row["seroId"])}>
+                  <div onClick={() => onPolis(row["seroId"])}>
                       {row["seroId"]}
                     </div>
                   </Cell>
-                  <Cell>{row["servStatus"]}</Cell>
+                  <Cell>{row["servType"]}</Cell>
                   {
-                    row["servStatus"] === "INACTIVE" ? (
-                      <ClayButton displayType="secondary" type='submit' disabled>Request Polis</ClayButton>
+                    row["servType"] === "POLIS" ? (
+                      <ClayButton displayType="primary">Request Claim</ClayButton>
                     ) : (
-                      <ClayButton displayType="primary" type='submit' onClick={() => onRequestPolis(row["creqId"])}>Request Polis</ClayButton>
+                      <Text>Claim Processed</Text>
                     )
                   }
                 </Row>
@@ -130,32 +126,32 @@ export default function ServiceOrder() {
         </Body>
       </Table>
       <ClayPaginationBar>
-        <ClayPaginationBar.DropDown
-          items={[
-            {
-              label: "10",
-              onClick: () => { }
-            }
-          ]}
-          trigger={
-            <ClayButton displayType="unstyled">
-              {"10 items per page"}
-
-              <ClayIcon symbol="caret-double-l" />
-            </ClayButton>
+      <ClayPaginationBar.DropDown
+        items={[
+          {
+            label: "10",
+            onClick: () => {}
           }
-        />
+        ]}
+        trigger={
+          <ClayButton displayType="unstyled">
+            {"10 items per page"}
 
-        <ClayPaginationBar.Results>
-          {"Showing a handful of items..."}
-        </ClayPaginationBar.Results>
+            <ClayIcon symbol="caret-double-l" />
+          </ClayButton>
+        }
+      />
 
-        <ClayPaginationWithBasicItems
-          defaultActive={1}
-          ellipsisProps={{ "aria-label": "More", title: "More" }}
-          totalPages={10}
-        />
-      </ClayPaginationBar>
+      <ClayPaginationBar.Results>
+        {"Showing a handful of items..."}
+      </ClayPaginationBar.Results>
+
+      <ClayPaginationWithBasicItems
+        defaultActive={1}
+        ellipsisProps={{ "aria-label": "More", title: "More" }}
+        totalPages={10}
+      />
+    </ClayPaginationBar>
     </div>
   )
 }

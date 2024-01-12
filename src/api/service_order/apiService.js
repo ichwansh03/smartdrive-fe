@@ -10,6 +10,24 @@ const generateService = async(creq)=>{
     }
 }
 
+const serviceOrders = async()=>{
+    try {
+        const result = await axios.get(`${config.smartdrive}/service/feasiblity`);
+        return result.data;
+    } catch (error) {
+        return await error;
+    }
+}
+
+const requestPolis = async()=>{
+    try {
+        const result = await axios.get(`${config.smartdrive}/service/polis`);
+        return result.data;
+    } catch (error) {
+        return await error;
+    }
+}
+
 const taskList = async(id)=>{
     try {
         const result = await axios.get(`${config.smartdrive}/service/search?seroId=${id}`);
@@ -64,8 +82,19 @@ const workorderUpdate = async(status, id) => {
     }
 }
 
+const getAllUsers = async() => {
+    try {
+        const result = await axios.get(`http://localhost:8080/api/user`);
+        return result.data;
+    } catch (error) {
+        return error;       
+    }
+}
+
 export default {
     generateService,
+    serviceOrders,
+    requestPolis,
     taskList,
     workorderList,
     findTask,
